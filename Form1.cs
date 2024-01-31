@@ -10,7 +10,7 @@ namespace HotKeys
 
         private void MainForm_KeyDown(object? sender, KeyEventArgs e)
         {
-            if (e.Control && e.Shift && e.Alt && 
+            if (e.Control && e.Shift && e.Alt &&
                 e.KeyCode >= Keys.A && e.KeyCode <= Keys.Z)
             {
                 // Your hotkey action here
@@ -18,5 +18,6 @@ namespace HotKeys
                 this.KeyDown -= MainForm_KeyDown;
             }
         }
+
     }
 }
