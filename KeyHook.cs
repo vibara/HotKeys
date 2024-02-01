@@ -14,7 +14,7 @@ namespace HotKeys
         public const uint FLAG_ALT = 0x40000000;
         public const uint FLAG_SHIFT = 0x00800000;
 
-        public event EventHandler<KeyEventStructure> KeyDownEvent;
+        public event EventHandler<KeyEventStructure>? KeyDownEvent;
 
         public KeyHook()
         {
@@ -34,29 +34,27 @@ namespace HotKeys
 
         public static bool CtrlKeyDown
         {
-            get {
-                return (GetAsyncKeyState(VK_CONTROL) & PRESSED) != 0; 
-            }
+            get { return CheckKeyDown(VK_CONTROL); }
         }
 
         public static bool ShiftKeyDown
         {
-            
-            get {
-                return (GetAsyncKeyState(VK_SHIFT) & PRESSED) != 0; 
-            }
+            get {  return CheckKeyDown(VK_SHIFT); }
         }
 
         public static bool AltKeyDown
         {
-            get {
-                return (GetAsyncKeyState(VK_MENU) & PRESSED) != 0;  
-            }
+            get { return CheckKeyDown(VK_MENU); }
         }
 
 
         private bool disposedFlag = false;
 
+
+        private static bool CheckKeyDown(int keyCode)
+        {
+            return (GetAsyncKeyState(keyCode) & PRESSED) != 0;
+        }
 
         private IntPtr KeyHookFunction(Int32 Code, IntPtr wParam, IntPtr lParam)
         {

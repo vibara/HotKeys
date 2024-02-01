@@ -29,7 +29,13 @@
         private void InitializeComponent()
         {
             SuspendLayout();
-            //  
+            //
+            // CtrlAltShiftControl
+            //
+            ctrlAltShiftControl = new CtrlAltShiftControl();
+            ctrlAltShiftControl.Name = "CtrlAltShift control";
+            
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -40,6 +46,9 @@
             ResumeLayout(false);
         }
 
+        CtrlAltShiftControl ctrlAltShiftControl; 
+
         #endregion
+
     }
 }
