@@ -11,7 +11,7 @@ namespace HotKeys
 {
     internal class KeyHookExt
     {
-        // arguments of event (lParam)
+        // arguments for the CallNextHookEx (lParam)
         [StructLayout(LayoutKind.Sequential)]
         public struct KeyEventStructure
         {
@@ -22,8 +22,7 @@ namespace HotKeys
             public UIntPtr dwExtraInfo;
         }
 
-
-        // internal delegate type
+        // delegate a function called from CallNextHookEx
         protected delegate IntPtr KeyProc(Int32 Code, IntPtr wParam, IntPtr lParam);
 
 
@@ -42,13 +41,8 @@ namespace HotKeys
         [DllImport("User32.dll")]
         protected static extern Int16 GetAsyncKeyState(Int32 vKey);
 
-
         [DllImport("User32.dll")]
         protected static extern Int16 GetKeyState(Int32 vKey);
-
-
-        [DllImport("kernel32.dll")]
-        protected static extern IntPtr LoadLibrary(string lpFileName);
 
         [DllImport("kernel32.dll")]
         protected static extern IntPtr GetModuleHandle(string lpModuleName);

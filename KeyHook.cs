@@ -10,10 +10,6 @@ namespace HotKeys
 {
     internal class KeyHook : KeyHookExt, IDisposable
     {
-        public const uint FLAG_CTRL = 0x80000000;
-        public const uint FLAG_ALT = 0x40000000;
-        public const uint FLAG_SHIFT = 0x00800000;
-
         public event EventHandler<KeyEventStructure>? KeyDownEvent;
 
         public KeyHook()
@@ -29,7 +25,6 @@ namespace HotKeys
                 UnhookWindowsHookEx(hKeyHook);
                 disposedFlag = true;
             }
-            
         }
 
         public static bool CtrlKeyDown
@@ -58,7 +53,6 @@ namespace HotKeys
 
         private IntPtr KeyHookFunction(Int32 Code, IntPtr wParam, IntPtr lParam)
         {
-
             if (KeyDownEvent != null)
             {
                 var args = Marshal.PtrToStructure<KeyEventStructure>(lParam);
