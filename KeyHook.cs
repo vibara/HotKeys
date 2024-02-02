@@ -12,7 +12,8 @@ namespace HotKeys
     {
         public KeyHookOptions Options { get; private set; }
 
-        public event EventHandler<KeyEventStructure>? KeyDownEvent;
+
+        public event EventHandler<KeyEventArgs>? KeyDownEvent;
 
         public KeyHook()
         {
@@ -102,10 +103,15 @@ namespace HotKeys
         {
             if (KeyDownEvent != null)
             {
-                var args = Marshal.PtrToStructure<KeyEventStructure>(lParam);
+                var args = new KeyEventArgs(Marshal.PtrToStructure<KeyEventStructure>(lParam));
+                
                 if (wParam == (IntPtr)WM_KEYDOWN)
                 {
                     KeyDownEvent(this, args);
+                    if (args.IsHandled)
+                    {
+                        return (IntPtr)1;
+                    }
                 }
             }
             return CallNextHookEx(hKeyHook, Code, wParam, lParam);

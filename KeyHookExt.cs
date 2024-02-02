@@ -11,7 +11,6 @@ namespace HotKeys
 {
     internal class KeyHookExt
     {
-        // arguments for the CallNextHookEx (lParam)
         [StructLayout(LayoutKind.Sequential)]
         public struct KeyEventStructure
         {
@@ -22,7 +21,6 @@ namespace HotKeys
             public UIntPtr dwExtraInfo;
         }
 
-        // delegate a function called from CallNextHookEx
         protected delegate IntPtr KeyProc(Int32 Code, IntPtr wParam, IntPtr lParam);
 
 

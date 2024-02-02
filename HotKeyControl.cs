@@ -25,13 +25,14 @@ namespace HotKeys
 
         private KeyHook keyHook;
 
-        private void KeyHook_KeyDownEvent(object? sender, KeyHookExt.KeyEventStructure e)
+        private void KeyHook_KeyDownEvent(object? sender, KeyEventArgs e)
         {
             if (KeyHook.CheckFlagKeysPressed(keyHook.Options.Flags) &&
-                keyHook.Options.Letter == KeyHook.CharByVkCode(e.vkCode))
+                keyHook.Options.Letter == KeyHook.CharByVkCode(e.KeyEventStructure.vkCode))
             {
                 var myForm = FindForm();
                 MessageBox.Show($"{KeyHook.GetFlagKeysStringPrefix(keyHook.Options.Flags)}{keyHook.Options.Letter} pressed.");
+                e.IsHandled = true;
             }
         }
 
