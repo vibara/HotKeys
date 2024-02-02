@@ -10,7 +10,7 @@ namespace HotKeys
 {
     internal class KeyHook : KeyHookExt, IDisposable
     {
-        public KeyHookOptions Options { get; }
+        public KeyHookOptions Options { get; private set; }
 
         public event EventHandler<KeyEventStructure>? KeyDownEvent;
 
@@ -34,45 +34,42 @@ namespace HotKeys
         public static bool CheckFlagKeysPressed(KeyHookFlags mask)
         {
             KeyHookFlags result = 0;
-            if ((mask & KeyHookFlags.Shift) != 0 && 
-                CheckKeyDown(VK_SHIFT))
+            if (CheckKeyDown(VK_SHIFT))
             {
                 result |= KeyHookFlags.Shift;
             }
-            if ((mask & KeyHookFlags.Ctrl) != 0 && 
-                CheckKeyDown(VK_CONTROL))
+            if (CheckKeyDown(VK_CONTROL))
             {
                 result |= KeyHookFlags.Ctrl;
             }
-            if ((mask & KeyHookFlags.Alt) != 0 && 
-                CheckKeyDown(VK_MENU))
+            if (CheckKeyDown(VK_MENU))
             {
                 result |= KeyHookFlags.Alt;
             }
-            if ((mask | KeyHookFlags.Win) != 0 && 
-                (CheckKeyDown(VK_LWIN) || CheckKeyDown(VK_RWIN)))
+            if (CheckKeyDown(VK_LWIN) || CheckKeyDown(VK_RWIN))
             {
                 result |= KeyHookFlags.Win;
             }
+            Debug.WriteLine($"Result: 0x{result:X} mask: 0x{mask:X}");
             return result == mask;
         }
 
         public static string GetFlagKeysStringPrefix(KeyHookFlags mask)
         {
             var result = string.Empty;
-            if ((mask & KeyHookFlags.Shift) != 0) 
+            if ((mask & KeyHookFlags.Shift) == KeyHookFlags.Shift) 
             {
                 result += "Shift + ";
             }
-            if ((mask & KeyHookFlags.Ctrl) != 0)
+            if ((mask & KeyHookFlags.Ctrl) == KeyHookFlags.Ctrl)
             {
                 result += "Ctrl + ";
             }
-            if ((mask & KeyHookFlags.Alt) != 0)
+            if ((mask & KeyHookFlags.Alt) == KeyHookFlags.Alt)
             {
                 result += "Alt + ";
             }
-            if ((mask & KeyHookFlags.Win) != 0)
+            if ((mask & KeyHookFlags.Win) == KeyHookFlags.Win)
             {
                 result += "Win + ";
             }

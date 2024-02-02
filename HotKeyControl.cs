@@ -31,11 +31,6 @@ namespace HotKeys
                 keyHook.Options.Letter == KeyHook.CharByVkCode(e.vkCode))
             {
                 var myForm = FindForm();
-                if (myForm != null)
-                {
-                    myForm.TopMost = true;
-                }
-
                 MessageBox.Show($"{KeyHook.GetFlagKeysStringPrefix(keyHook.Options.Flags)}{keyHook.Options.Letter} pressed.");
             }
         }
