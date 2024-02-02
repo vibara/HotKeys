@@ -10,12 +10,16 @@ namespace HotKeys
 {
     internal class KeyHook : KeyHookExt, IDisposable
     {
+        public KeyHookOptions Options { get; }
+
         public event EventHandler<KeyEventStructure>? KeyDownEvent;
 
         public KeyHook()
         {
             IntPtr hInstance = GetModuleHandle("User32");
+
             hKeyHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyHookFunction, hInstance, 0);
+            Options = new KeyHookOptions();
         }
 
         public void Dispose()
@@ -27,24 +31,70 @@ namespace HotKeys
             }
         }
 
-        public static bool CtrlKeyDown
+        public static bool CheckFlagKeysPressed(KeyHookFlags mask)
         {
-            get { return CheckKeyDown(VK_CONTROL); }
+            KeyHookFlags result = 0;
+            if ((mask & KeyHookFlags.Shift) != 0 && 
+                CheckKeyDown(VK_SHIFT))
+            {
+                result |= KeyHookFlags.Shift;
+            }
+            if ((mask & KeyHookFlags.Ctrl) != 0 && 
+                CheckKeyDown(VK_CONTROL))
+            {
+                result |= KeyHookFlags.Ctrl;
+            }
+            if ((mask & KeyHookFlags.Alt) != 0 && 
+                CheckKeyDown(VK_MENU))
+            {
+                result |= KeyHookFlags.Alt;
+            }
+            if ((mask | KeyHookFlags.Win) != 0 && 
+                (CheckKeyDown(VK_LWIN) || CheckKeyDown(VK_RWIN)))
+            {
+                result |= KeyHookFlags.Win;
+            }
+            return result == mask;
         }
 
-        public static bool ShiftKeyDown
+        public static string GetFlagKeysStringPrefix(KeyHookFlags mask)
         {
-            get {  return CheckKeyDown(VK_SHIFT); }
+            var result = string.Empty;
+            if ((mask & KeyHookFlags.Shift) != 0) 
+            {
+                result += "Shift + ";
+            }
+            if ((mask & KeyHookFlags.Ctrl) != 0)
+            {
+                result += "Ctrl + ";
+            }
+            if ((mask & KeyHookFlags.Alt) != 0)
+            {
+                result += "Alt + ";
+            }
+            if ((mask & KeyHookFlags.Win) != 0)
+            {
+                result += "Win + ";
+            }
+            return result;
         }
 
-        public static bool AltKeyDown
+        public static char CharByVkCode(uint vkCode)
         {
-            get { return CheckKeyDown(VK_MENU); }
+            return (char)('A' + (vkCode - (uint)Keys.A));
         }
 
+        private const int WH_KEYBOARD_LL = 13;
+        private const int WM_KEYDOWN = 0x100;
+        private const byte VK_SHIFT = 0x10;
+        private const byte VK_CONTROL = 0x11;
+        private const byte VK_MENU = 0x12;
+        private const byte VK_LWIN = 0x5B;
+        private const byte VK_RWIN = 0x5C;
+        private const ushort PRESSED = 0x8000;
 
         private bool disposedFlag = false;
-
+        private IntPtr hKeyHook;
 
         private static bool CheckKeyDown(int keyCode)
         {
@@ -63,13 +113,5 @@ namespace HotKeys
             }
             return CallNextHookEx(hKeyHook, Code, wParam, lParam);
         }
-
-        private IntPtr hKeyHook;
-        private const int WH_KEYBOARD_LL = 13;
-        private const int WM_KEYDOWN = 0x100;
-        private const byte VK_SHIFT = 0x10;
-        private const byte VK_CONTROL = 0x11;
-        private const byte VK_MENU = 0x12;
-        private const ushort PRESSED = 0x8000;
     }
 }

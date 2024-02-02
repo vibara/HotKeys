@@ -28,27 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
+            hotKeyControl = new HotKeyControl();
             SuspendLayout();
-            //
-            // CtrlAltShiftControl
-            //
-            ctrlAltShiftControl = new CtrlAltShiftControl();
-            ctrlAltShiftControl.Name = "CtrlAltShift control";
-            
             // 
-            // Form1
+            // hotKeyControl
+            // 
+            hotKeyControl.Location = new Point(47, 41);
+            hotKeyControl.Name = "hotKeyControl";
+            hotKeyControl.Size = new Size(94, 169);
+            hotKeyControl.TabIndex = 0;
+            // 
+            // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Name = "Form1";
-            Text = "TEST FORM (empty now)";
+            ClientSize = new Size(178, 251);
+            Controls.Add(hotKeyControl);
+            Name = "MainForm";
+            Text = "TEST FORM";
             ResumeLayout(false);
         }
 
-        CtrlAltShiftControl ctrlAltShiftControl; 
 
         #endregion
 
+
+        private HotKeyControl hotKeyControl;
     }
 }
