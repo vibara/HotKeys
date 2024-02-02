@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -30,7 +31,6 @@ namespace HotKeys
             if (KeyHook.CheckFlagKeysPressed(keyHook.Options.Flags) &&
                 keyHook.Options.Letter == KeyHook.CharByVkCode(e.KeyEventStructure.vkCode))
             {
-                var myForm = FindForm();
                 MessageBox.Show($"{KeyHook.GetFlagKeysStringPrefix(keyHook.Options.Flags)}{keyHook.Options.Letter} pressed.");
                 e.IsHandled = true;
             }
@@ -78,7 +78,6 @@ namespace HotKeys
         {
             UpdateKeyHookOptions();
         }
-
         private void comboBoxLetter_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateKeyHookOptions();

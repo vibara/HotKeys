@@ -51,7 +51,7 @@ namespace HotKeys
             {
                 result |= KeyHookFlags.Win;
             }
-            Debug.WriteLine($"Result: 0x{result:X} mask: 0x{mask:X}");
+            Debug.WriteLine($"Key down: 0x{result:X} mask: 0x{mask:X}");
             return result == mask;
         }
 
@@ -84,6 +84,7 @@ namespace HotKeys
 
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x100;
+        private const int WM_SYSKEYDOWN = 0x0104;
         private const byte VK_SHIFT = 0x10;
         private const byte VK_CONTROL = 0x11;
         private const byte VK_MENU = 0x12;
@@ -105,7 +106,7 @@ namespace HotKeys
             {
                 var args = new KeyEventArgs(Marshal.PtrToStructure<KeyEventStructure>(lParam));
                 
-                if (wParam == (IntPtr)WM_KEYDOWN)
+                if (wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN)
                 {
                     KeyDownEvent(this, args);
                     if (args.IsHandled)
